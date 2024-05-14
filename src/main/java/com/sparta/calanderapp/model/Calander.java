@@ -2,6 +2,7 @@ package com.sparta.calanderapp.model;
 
 import com.sparta.calanderapp.dto.CalanderRequestDTO;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -9,6 +10,7 @@ import java.sql.Date;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class Calander {
     private Long id;
     private String title;

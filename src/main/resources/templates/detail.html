@@ -22,10 +22,10 @@
             getMessages();
         })
 
-        function addHTML(id, title, name, date) {
+        function addHTML(title, name, date) {
             let temp_html = `
                 <tr>
-                    <th scope="row"><a href="app/${id}">${title}</a></th>
+                    <th scope="row">${title}</th>
                     <td>${name}</td>
                     <td>${date}</td>
                 </tr>
@@ -44,11 +44,10 @@
                 success: function (response) {
                     for (let i = 0; i < response.length; i++) {
                         let calander = response[i];
-                        let id = calander['id'];
                         let title = calander['title'];
                         let name = calander['name'];
                         let date = calander['date'];
-                        addHTML(id, title, name, date);
+                        addHTML(title, name, date);
                     }
                 }
             })
@@ -93,24 +92,15 @@
 </head>
 <body>
 <main class="container">
-    <table>
-        <thead>
-            <tr>
-                <th scope="col">제목</th>
-                <th scope="col">이름</th>
-                <th scope="col">날짜</th>
-            </tr>
-        </thead>
-        <tbody id="calanderlist">
-
-        </tbody>
-    </table>
-    <input id="title" type="text" name="title" placeholder="제목" aria-label="Text" />
-    <input id="content" type="text" name="content" placeholder="내용" aria-label="Text" />
-    <input id="name" type="text" name="name" placeholder="담당자이름" aria-label="Text" />
-    <input id="date" type="date" name="date" aria-label="Date" value=""/>
-    <input id="password" type="password" name="password" placeholder="비밀번호" aria-label="Password" />
-    <button onclick="createCalander()">Button</button>
+    <article>
+        <header>
+            <h1><p th:text="${title}"></p></h1><br/>
+            담당자:<span th:text="${name}"></span>
+            <p th:text="${date}"></p>
+        </header>
+        <p th:text="${content}"></p>
+        <footer>Footer</footer>
+    </article>
 </main>
 </body>
 </html>
