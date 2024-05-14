@@ -4,15 +4,112 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="light dark" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     <title>Hello world!</title>
     <script>
+        function getToday(){
+            var date = new Date();
+            var year = date.getFullYear();
+            var month = ("0" + (1 + date.getMonth())).slice(-2);
+            var day = ("0" + date.getDate()).slice(-2);
 
+            return year + "-" + month + "-" + day;
+        }
+        $(document).ready(function () {
+            // HTML 문서를 로드할 때마다 실행합니다.
+            $('#date').val(getToday());
+            getMessages();
+        })
+
+        function addHTML(title, name, date) {
+            let temp_html = `
+                <tr>
+                    <th scope="row">${title}</th>
+                    <td>${name}</td>
+                    <td>${date}</td>
+                </tr>
+            `
+            $('#calanderlist').append(temp_html)
+        }
+
+        // 메모를 불러와서 보여줍니다.
+        function getMessages() {
+            // 1. 기존 메모 내용을 지웁니다.
+            $('#cards-box').empty();
+            // 2. 메모 목록을 불러와서 HTML로 붙입니다.
+            $.ajax({
+                type: 'GET',
+                url: '/app/list',
+                success: function (response) {
+                    for (let i = 0; i < response.length; i++) {
+                        let calander = response[i];
+                        let title = calander['title'];
+                        let name = calander['name'];
+                        let date = calander['date'];
+                        addHTML(title, name, date);
+                    }
+                }
+            })
+        }
+        function createCalander() {
+            // 1. 작성한 메모를 불러옵니다.
+            let title = $('#title').val();
+            let content = $('#content').val();
+            let name = $('#name').val();
+            let date = $('#date').val();
+            let password = $('#password').val();
+
+            // // 2. 작성한 메모가 올바른지 isValidContents 함수를 통해 확인합니다.
+            // if (isValidContents(contents) == false) {
+            //     return;
+            // }
+            // 3. genRandomName 함수를 통해 익명의 username을 만듭니다.
+            // let username = genRandomName(10);
+
+            // 4. 전달할 data JSON으로 만듭니다.
+            let data = {
+                'title': title,
+                'content': content,
+                'name': name,
+                'date': date,
+                'password': password
+            };
+
+            // 5. POST /api/memos 에 data를 전달합니다.
+            $.ajax({
+                type: "POST",
+                url: "/app/create",
+                contentType: "application/json",
+                data: JSON.stringify(data),
+                success: function (response) {
+                    alert('메시지가 성공적으로 작성되었습니다.');
+                    window.location.reload();
+                }
+            });
+        }
     </script>
 </head>
 <body>
 <main class="container">
-    <h1>Hello world!</h1>
+    <table>
+        <thead>
+            <tr>
+                <th scope="col">제목</th>
+                <th scope="col">이름</th>
+                <th scope="col">날짜</th>
+            </tr>
+        </thead>
+        <tbody id="calanderlist">
+
+        </tbody>
+    </table>
+    <input id="title" type="text" name="title" placeholder="제목" aria-label="Text" />
+    <input id="content" type="text" name="content" placeholder="내용" aria-label="Text" />
+    <input id="name" type="text" name="name" placeholder="담당자이름" aria-label="Text" />
+    <input id="date" type="date" name="date" aria-label="Date" value=""/>
+    <input id="password" type="password" name="password" placeholder="비밀번호" aria-label="Password" />
+    <button onclick="createCalander()">Button</button>
 </main>
 </body>
 </html>
