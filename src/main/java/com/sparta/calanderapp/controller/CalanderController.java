@@ -75,13 +75,42 @@ public class CalanderController {
         model.addAttribute("password", calander.getPassword());
         return "detail";
     }
+    @GetMapping("/update/{id}")
+    public String updateGetCalanderbyId(@PathVariable Long id, Model model) {
+        Calander calander = findById(id);
+        model.addAttribute("id", calander.getId());
+        model.addAttribute("title", calander.getTitle());
+        model.addAttribute("content", calander.getContent());
+        model.addAttribute("name", calander.getName());
+        model.addAttribute("date", calander.getDate());
+        model.addAttribute("password", calander.getPassword());
+        return "update";
+    }
+    @PutMapping("/update/{id}")
+    @ResponseBody
+    public Long updateCalander(@PathVariable Long id, @RequestBody CalanderRequestDTO requestDTO) {
+        Calander calander = findById(id);
+        if(calander.getPassword().equals(requestDTO.getPassword())) {
+            if(calander != null) {
+                String sql = "UPDATE calander SET title = ?, content = ?, name = ?, date = ? where id = ?";
+                jdbcTemplate.update(sql, requestDTO.getTitle(), requestDTO.getContent(), requestDTO.getName(), requestDTO.getDate(), id);
 
-    public Calander findById(@PathVariable Long id) {
+                return id;
+            } else {
+                throw new IllegalArgumentException("존재하지 않는 일정입니다.");
+            }
+        } else {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+    }
+
+    public Calander findById(Long id) {
         String sql = "SELECT * FROM calander WHERE id = ?";
 
         return jdbcTemplate.query(sql, resultSet -> {
             if (resultSet.next()){
                 Calander calander = new Calander();
+                calander.setId(resultSet.getLong("id"));
                 calander.setTitle(resultSet.getString("title"));
                 calander.setContent(resultSet.getString("content"));
                 calander.setName(resultSet.getString("name"));
