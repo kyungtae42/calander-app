@@ -3,6 +3,7 @@ package com.sparta.calanderapp.controller;
 import com.sparta.calanderapp.dto.CalanderRequestDTO;
 import com.sparta.calanderapp.dto.CalanderResponseDTO;
 import com.sparta.calanderapp.model.Calander;
+import com.sparta.calanderapp.services.CalanderService;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -21,120 +22,41 @@ import java.util.List;
 @RequestMapping("/app")
 public class CalanderController {
     private final JdbcTemplate jdbcTemplate;
+    private final CalanderService calanderService;
     public CalanderController(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+        this.jdbcTemplate = new JdbcTemplate();
+        this.calanderService = new CalanderService(jdbcTemplate);
     }
+
 
     @PostMapping("/create")
     @ResponseBody
     public CalanderResponseDTO createCalander (@RequestBody CalanderRequestDTO requestDTO) {
-        Calander calander = new Calander(requestDTO);
-        KeyHolder keyHolder = new GeneratedKeyHolder();
+        return calanderService.createCalander(requestDTO);
 
-        String sql = "INSERT INTO calander (title, content, name, date, password) VALUES (?, ?, ?, ?, ?)";
-        jdbcTemplate.update( con -> {
-                    PreparedStatement preparedStatement = con.prepareStatement(sql,
-                            Statement.RETURN_GENERATED_KEYS);
-
-                    preparedStatement.setString(1, calander.getTitle());
-                    preparedStatement.setString(2, calander.getContent());
-                    preparedStatement.setString(3, calander.getName());
-                    preparedStatement.setDate(4, calander.getDate());
-                    preparedStatement.setString(5, calander.getPassword());
-                    return preparedStatement;
-                },
-                keyHolder);
-        long id = keyHolder.getKey().longValue();
-        calander.setId(id);
-
-        CalanderResponseDTO calanderResponseDTO = new CalanderResponseDTO(calander);
-        return calanderResponseDTO;
     }
     @GetMapping("/list")
     @ResponseBody
     public List<CalanderResponseDTO> getCalanders() {
-        String sql = "SELECT * FROM calander";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> {
-            Long id = rs.getLong("id");
-            String title = rs.getString("title");
-            String content = rs.getString("content");
-            String name = rs.getString("name");
-            Date date = rs.getDate("date");
-            String password = rs.getString("password");
-            return new CalanderResponseDTO(id, title, content, name, date, password);
-        });
+        return calanderService.getCalanders();
     }
     @GetMapping("/{id}")
     public String getCalanderbyId(@PathVariable Long id, Model model) {
-        Calander calander = findById(id);
-        model.addAttribute("id", calander.getId());
-        model.addAttribute("title", calander.getTitle());
-        model.addAttribute("content", calander.getContent());
-        model.addAttribute("name", calander.getName());
-        model.addAttribute("date", calander.getDate());
-        model.addAttribute("password", calander.getPassword());
+        calanderService.getCalanderById(id, model);
         return "detail";
     }
     @GetMapping("/update/{id}")
     public String updateGetCalanderbyId(@PathVariable Long id, Model model) {
-        Calander calander = findById(id);
-        model.addAttribute("id", calander.getId());
-        model.addAttribute("title", calander.getTitle());
-        model.addAttribute("content", calander.getContent());
-        model.addAttribute("name", calander.getName());
-        model.addAttribute("date", calander.getDate());
-        model.addAttribute("password", calander.getPassword());
+        calanderService.getCalanderById(id, model);
         return "update";
     }
     @PutMapping("/update/{id}")
     @ResponseBody
     public Long updateCalander(@PathVariable Long id, @RequestBody CalanderRequestDTO requestDTO) {
-        Calander calander = findById(id);
-        if(calander.getPassword().equals(requestDTO.getPassword())) {
-            if(calander != null) {
-                String sql = "UPDATE calander SET title = ?, content = ?, name = ?, date = ? where id = ?";
-                jdbcTemplate.update(sql, requestDTO.getTitle(), requestDTO.getContent(), requestDTO.getName(), requestDTO.getDate(), id);
-
-                return id;
-            } else {
-                throw new IllegalArgumentException("존재하지 않는 일정입니다.");
-            }
-        } else {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
-        }
+        return calanderService.updateCalander(id, requestDTO);
     }
     @DeleteMapping("/delete/{id}")
     public String deleteCalander(@PathVariable Long id, @RequestParam String password) {
-        Calander calander = findById(id);
-        if(calander.getPassword().equals(password)) {
-            if(calander != null) {
-                String sql = "DELETE FROM calander WHERE id = ?";
-                jdbcTemplate.update(sql, id);
-
-                return "redirect:/index.html";
-            } else {
-                throw new IllegalArgumentException("존재하지 않는 일정입니다.");
-            }
-        } else {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
-        }
-    }
-    public Calander findById(Long id) {
-        String sql = "SELECT * FROM calander WHERE id = ?";
-
-        return jdbcTemplate.query(sql, resultSet -> {
-            if (resultSet.next()){
-                Calander calander = new Calander();
-                calander.setId(resultSet.getLong("id"));
-                calander.setTitle(resultSet.getString("title"));
-                calander.setContent(resultSet.getString("content"));
-                calander.setName(resultSet.getString("name"));
-                calander.setDate(resultSet.getDate("date"));
-                calander.setPassword(resultSet.getString("password"));
-                return calander;
-            } else {
-                return null;
-            }
-        }, id);
+        return calanderService.deleteCalander(id, password);
     }
 }

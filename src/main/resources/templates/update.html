@@ -8,24 +8,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     <title>Hello world!</title>
     <script>
-        // 일정 리스트 불러오기
-        function getList() {
-            // 2. 일정 목록 html로 붙이기
-            $.ajax({
-                type: 'GET',
-                url: '/app/list',
-                success: function (response) {
-                    for (let i = 0; i < response.length; i++) {
-                        let calander = response[i];
-                        let id = calander['id'];
-                        let title = calander['title'];
-                        let name = calander['name'];
-                        let date = calander['date'];
-                        addHTML(id, title, name, date);
-                    }
-                }
-            })
-        }
         function createCalander() {
             // 1. 작성한 메모를 불러옵니다.
             let id = $('#id').val();
