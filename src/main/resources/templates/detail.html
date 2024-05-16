@@ -7,6 +7,37 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     <title>Hello world!</title>
+    <script>
+        function deleteCalander() {
+            // 1. 작성한 메모를 불러옵니다.
+            let id = $('#id').val();
+            let password = $('#password').val();
+
+            // // 2. 작성한 메모가 올바른지 isValidContents 함수를 통해 확인합니다.
+            // if (isValidContents(contents) == false) {
+            //     return;
+            // }
+            // 3. genRandomName 함수를 통해 익명의 username을 만듭니다.
+            // let username = genRandomName(10);
+
+            // 4. 전달할 data JSON으로 만듭니다.
+            let data = {
+                'password': password
+            };
+
+            // 5. POST /api/memos 에 data를 전달합니다.
+            $.ajax({
+                type: "DELETE",
+                url: `/app/delete/${id}`,
+                contentType: "application/json",
+                data: JSON.stringify(data),
+                success: function (response) {
+                    alert('메시지가 성공적으로 삭제되었습니다.');
+                    window.location.href = "/";
+                }
+            });
+        }
+    </script>
 </head>
 <body>
 <main class="container">
@@ -17,7 +48,17 @@
             <p th:text="${date}"></p>
         </header>
         <p th:text="${content}"></p>
-        <footer><a th:href="@{update/{id}(id=${id})}"><button>Button</button></a></footer>
+        <footer>
+                <a th:href="@{update/{id}(id=${id})}"><button>수정</button></a>
+                <form action="#" method="#" th:method="delete" th:action="@{delete/{id}(id=${id})}">
+                    <fieldset role="group">
+                        <input id="id" type="hidden" value="" th:value="${id}" />
+                        <input id="password" type="password" name="password" placeholder="비밀번호" aria-label="Password" />
+                        <button>삭제</button>
+                    </fieldset>
+                </form>
+
+        </footer>
     </article>
 </main>
 </body>

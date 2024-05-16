@@ -103,7 +103,22 @@ public class CalanderController {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
     }
+    @DeleteMapping("/delete/{id}")
+    public String deleteCalander(@PathVariable Long id, @RequestParam String password) {
+        Calander calander = findById(id);
+        if(calander.getPassword().equals(password)) {
+            if(calander != null) {
+                String sql = "DELETE FROM calander WHERE id = ?";
+                jdbcTemplate.update(sql, id);
 
+                return "redirect:/index.html";
+            } else {
+                throw new IllegalArgumentException("존재하지 않는 일정입니다.");
+            }
+        } else {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+    }
     public Calander findById(Long id) {
         String sql = "SELECT * FROM calander WHERE id = ?";
 
