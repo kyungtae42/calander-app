@@ -43,16 +43,16 @@
 <main class="container">
     <article>
         <header>
-            <h1><p th:text="${title}"></p></h1><br/>
-            담당자:<span th:text="${name}"></span>
-            <p th:text="${date}"></p>
+            <h1><p th:text="${row.title}"></p></h1><br/>
+            담당자:<span th:text="${row.name}"></span>
+            <p th:text="${row.date}"></p>
         </header>
-        <p th:text="${content}"></p>
+        <p th:text="${row.content}"></p>
         <footer>
-                <a th:href="@{update/{id}(id=${id})}"><button>수정</button></a>
-                <form action="#" method="#" th:method="delete" th:action="@{delete/{id}(id=${id})}">
+                <a th:href="@{update/{id}(id=${row.id})}"><button>수정</button></a>
+                <form action="#" method="#" th:method="delete" th:action="@{delete/{id}(id=${row.id})}">
                     <fieldset role="group">
-                        <input id="id" type="hidden" value="" th:value="${id}" />
+                        <input id="id" type="hidden" value="" th:value="${row.id}" />
                         <input id="password" type="password" name="password" placeholder="비밀번호" aria-label="Password" />
                         <button>삭제</button>
                     </fieldset>

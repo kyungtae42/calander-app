@@ -21,11 +21,9 @@ import java.util.List;
 @Controller
 @RequestMapping("/app")
 public class CalanderController {
-    private final JdbcTemplate jdbcTemplate;
     private final CalanderService calanderService;
-    public CalanderController(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = new JdbcTemplate();
-        this.calanderService = new CalanderService(jdbcTemplate);
+    public CalanderController(CalanderService calanderService) {
+        this.calanderService = calanderService;
     }
 
 
@@ -57,6 +55,7 @@ public class CalanderController {
     }
     @DeleteMapping("/delete/{id}")
     public String deleteCalander(@PathVariable Long id, @RequestParam String password) {
-        return calanderService.deleteCalander(id, password);
+        calanderService.deleteCalander(id, password);
+        return "redirect:/index.html";
     }
 }
