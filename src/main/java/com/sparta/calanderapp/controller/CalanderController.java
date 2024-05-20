@@ -19,24 +19,22 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Controller
-@RequestMapping("/app")
 public class CalanderController {
     private final CalanderService calanderService;
     public CalanderController(CalanderService calanderService) {
         this.calanderService = calanderService;
     }
 
-
+    @GetMapping("/")
+    public String getCalanders(Model model) {
+        calanderService.getCalanders(model);
+        return "index";
+    }
     @PostMapping("/create")
     @ResponseBody
     public CalanderResponseDTO createCalander (@RequestBody CalanderRequestDTO requestDTO) {
         return calanderService.createCalander(requestDTO);
 
-    }
-    @GetMapping("/list")
-    @ResponseBody
-    public List<CalanderResponseDTO> getCalanders() {
-        return calanderService.getCalanders();
     }
     @GetMapping("/{id}")
     public String getCalanderbyId(@PathVariable Long id, Model model) {

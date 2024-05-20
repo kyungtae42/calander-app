@@ -4,7 +4,6 @@ import com.sparta.calanderapp.dto.CalanderRequestDTO;
 import com.sparta.calanderapp.dto.CalanderResponseDTO;
 import com.sparta.calanderapp.model.Calander;
 import com.sparta.calanderapp.repository.CalanderRepository;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,8 +27,8 @@ public class CalanderService {
         return calanderResponseDTO;
     }
 
-    public List<CalanderResponseDTO> getCalanders() {
-        return calanderRepository.findAll().stream().map(CalanderResponseDTO::new).toList();
+    public void getCalanders(Model model) {
+        model.addAttribute("rows", calanderRepository.findAll().stream().map(CalanderResponseDTO::new).toList());
     }
 
     public void getCalanderById(Long id, Model model) {
