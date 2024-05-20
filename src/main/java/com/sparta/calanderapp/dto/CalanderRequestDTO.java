@@ -1,6 +1,7 @@
 package com.sparta.calanderapp.dto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -9,7 +10,7 @@ import java.sql.Date;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class CalanderRequestDTO {
     private Long id;
     private String title;
@@ -19,7 +20,4 @@ public class CalanderRequestDTO {
     private Date date;
     private String password;
 
-    public void setDate(String date) {
-        this.date = Date.valueOf(date);
-    }
 }

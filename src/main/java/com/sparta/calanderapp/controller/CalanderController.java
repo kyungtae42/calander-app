@@ -45,18 +45,18 @@ public class CalanderController {
         return "detail";
     }
     @GetMapping("/update/{id}")
-    public String updateGetCalanderbyId(@PathVariable Long id, Model model) {
-        calanderService.getCalanderById(id, model);
+    public String updateGetCalanderbyId(@PathVariable Long id, @ModelAttribute("requestDTO") CalanderRequestDTO requestDTO) {
+        calanderService.getUpdateCalanderById(id, requestDTO);
         return "update";
     }
     @PutMapping("/update/{id}")
-    @ResponseBody
-    public Long updateCalander(@PathVariable Long id, @RequestBody CalanderRequestDTO requestDTO) {
-        return calanderService.updateCalander(id, requestDTO);
+    public String updateCalander(@PathVariable Long id, @ModelAttribute CalanderRequestDTO requestDTO) {
+        calanderService.updateCalander(id, requestDTO);
+        return "redirect:/";
     }
     @DeleteMapping("/delete/{id}")
     public String deleteCalander(@PathVariable Long id, @RequestParam String password) {
         calanderService.deleteCalander(id, password);
-        return "redirect:/index.html";
+        return "redirect:/";
     }
 }

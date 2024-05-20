@@ -31,6 +31,14 @@ public class CalanderService {
         Calander calander = findById(id);
         model.addAttribute("row", calander);
     }
+    public void getUpdateCalanderById(Long id, CalanderRequestDTO requestDTO) {
+        Calander calander = findById(id);
+        requestDTO.setId(calander.getId());
+        requestDTO.setTitle(calander.getTitle());
+        requestDTO.setContent(calander.getContent());
+        requestDTO.setName(calander.getName());
+        requestDTO.setDate(calander.getDate());
+    }
     @Transactional
     public Long updateCalander(Long id, CalanderRequestDTO requestDTO) {
         Calander calander = findById(id);
