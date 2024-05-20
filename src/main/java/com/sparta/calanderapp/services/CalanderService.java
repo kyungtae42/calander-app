@@ -9,8 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
-import java.util.List;
-
 @Component
 @Service
 public class CalanderService {
@@ -20,11 +18,9 @@ public class CalanderService {
         this.calanderRepository = calanderRepository;
     }
 
-    public CalanderResponseDTO createCalander(CalanderRequestDTO requestDTO) {
+    public void createCalander(CalanderRequestDTO requestDTO) {
         Calander calander = new Calander(requestDTO);
-        Calander insertedCalander = calanderRepository.save(calander);
-        CalanderResponseDTO calanderResponseDTO = new CalanderResponseDTO(insertedCalander);
-        return calanderResponseDTO;
+        calanderRepository.save(calander);
     }
 
     public void getCalanders(Model model) {

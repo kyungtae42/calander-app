@@ -30,11 +30,14 @@ public class CalanderController {
         calanderService.getCalanders(model);
         return "index";
     }
+    @GetMapping("/create")
+    public String getCreateCalander(@ModelAttribute("requestDTO") CalanderRequestDTO requestDTO) {
+        return "create";
+    }
     @PostMapping("/create")
-    @ResponseBody
-    public CalanderResponseDTO createCalander (@RequestBody CalanderRequestDTO requestDTO) {
-        return calanderService.createCalander(requestDTO);
-
+    public String createCalander (@ModelAttribute CalanderRequestDTO requestDTO) {
+        calanderService.createCalander(requestDTO);
+        return "redirect:/";
     }
     @GetMapping("/{id}")
     public String getCalanderbyId(@PathVariable Long id, Model model) {

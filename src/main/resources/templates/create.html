@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+</head>
+<body>
+    <form action="#" method="#" th:method="post" th:action="@{create}" th:object="${requestDTO}">
+        <input type="text" th:field="*{title}" placeholder="제목" aria-label="Text" />
+        <input type="text" th:field="*{content}" placeholder="내용" aria-label="Text" />
+        <input type="text" th:field="*{name}" placeholder="담당자이름" aria-label="Text" />
+        <input type="date" th:field="*{date}" aria-label="Date" value=""/>
+        <input type="password" th:field="*{password}" placeholder="비밀번호" aria-label="Password" />
+        <button>Button</button>
+    </form>
+</body>
+</html>

@@ -37,7 +37,7 @@
             // 5. POST /api/memos 에 data를 전달합니다.
             $.ajax({
                 type: "PUT",
-                url: `/app/update/${id}`,
+                url: `${id}`,
                 contentType: "application/json",
                 data: JSON.stringify(data),
                 success: function (response) {

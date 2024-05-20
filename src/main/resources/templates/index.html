@@ -26,12 +26,7 @@
             </tr>
         </tbody>
     </table>
-    <input id="title" type="text" name="title" placeholder="제목" aria-label="Text" />
-    <input id="content" type="text" name="content" placeholder="내용" aria-label="Text" />
-    <input id="name" type="text" name="name" placeholder="담당자이름" aria-label="Text" />
-    <input id="date" type="date" name="date" aria-label="Date" value=""/>
-    <input id="password" type="password" name="password" placeholder="비밀번호" aria-label="Password" />
-    <button onclick="createCalander()">Button</button>
+    <a th:href="@{create}"><button>새 일정</button></a>
 </main>
 </body>
 </html>
