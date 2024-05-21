@@ -7,7 +7,33 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     <title>Hello world!</title>
-    <script>
+    <script th:inline="javascript">
+        $(document).ready(function () {
+            // HTML 문서를 로드할 때마다 실행합니다.
+            getById();
+        })
+        function getById() {
+            // 2. 일정 목록 html로 붙이기
+            $.ajax({
+                type: 'GET',
+                url: `/app/[[${id}]]`,
+                success: function (response) {
+                    var result = {
+                        title: response.title,
+                        name: response.name,
+                        content: response.content,
+                        updatedAt:response.updatedAt
+                    };
+                        addHTML(result);
+                }
+            })
+        }
+        function addHTML(result) {
+            $('#title').append(result.title);
+            $('#content').append(result.content);
+            $('#name').append(result.name);
+            $('#updatedAt').append(result.updatedAt);
+        }
         function deleteCalander() {
             // 1. 작성한 메모를 불러옵니다.
             let id = $('#id').val();
@@ -28,9 +54,8 @@
             // 5. POST /api/memos 에 data를 전달합니다.
             $.ajax({
                 type: "DELETE",
-                url: `/app/delete/${id}`,
+                url: `/app/delete/[[${id}]]?password=` + password,
                 contentType: "application/json",
-                data: JSON.stringify(data),
                 success: function (response) {
                     alert('메시지가 성공적으로 삭제되었습니다.');
                     window.location.href = "/";
@@ -41,22 +66,22 @@
 </head>
 <body>
 <main class="container">
-    <article>
+    <article id="detail">
         <header>
-            <h1><p th:text="${row.title}"></p></h1><br/>
-            담당자:<span th:text="${row.name}"></span>
-            <p th:text="${row.updatedAt}"></p>
+            <h1 id="title"></h1>
+            <p id="name"></p>
+            <p id="updatedAt"></p><br/>
         </header>
-        <p th:text="${row.content}"></p>
+        <p id="content"></p>
         <footer>
-                <a th:href="@{update/{id}(id=${row.id})}"><button>수정</button></a>
-                <form action="#" method="#" th:method="delete" th:action="@{delete/{id}(id=${row.id})}">
-                    <fieldset role="group">
-                        <input id="id" type="hidden" value="" th:value="${row.id}" />
-                        <input id="password" type="password" name="password" placeholder="비밀번호" aria-label="Password" />
-                        <button>삭제</button>
-                    </fieldset>
-                </form>
+            <a th:href="@{update/{id}(id=${id})}"><button>수정</button></a>
+            <!--form action="#" method="#" th:method="delete" th:action="@{app/delete/{id}(id=${id})}"-->
+                <fieldset role="group">
+                    <input id="id" type="hidden" value="" th:value="${id}" />
+                    <input id="password" type="password" name="password" placeholder="비밀번호" aria-label="Password" />
+                    <button onclick="deleteCalander()">삭제</button>
+                </fieldset>
+            <!--/form-->
 
         </footer>
     </article>

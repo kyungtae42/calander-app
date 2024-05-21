@@ -7,14 +7,37 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     <title>Hello world!</title>
-    <script>
+    <script th:inline="javascript">
+        $(document).ready(function () {
+            // HTML 문서를 로드할 때마다 실행합니다.
+            getById();
+        })
+        function getById() {
+            // 2. 일정 목록 html로 붙이기
+            $.ajax({
+                type: 'GET',
+                url: `/app/[[${id}]]`,
+                success: function (response) {
+                    var result = {
+                        title: response.title,
+                        name: response.name,
+                        content: response.content,
+                    };
+                    addHTML(result);
+                }
+            })
+        }
+        function addHTML(result) {
+            $('#title').val(result.title);
+            $('#content').val(result.content);
+            $('#name').val(result.name);
+        }
         function createCalander() {
             // 1. 작성한 메모를 불러옵니다.
             let id = $('#id').val();
             let title = $('#title').val();
             let content = $('#content').val();
             let name = $('#name').val();
-            let date = $('#date').val();
             let password = $('#password').val();
 
             // // 2. 작성한 메모가 올바른지 isValidContents 함수를 통해 확인합니다.
@@ -30,18 +53,17 @@
                 'title': title,
                 'content': content,
                 'name': name,
-                'date': date,
                 'password': password
             };
 
             // 5. POST /api/memos 에 data를 전달합니다.
             $.ajax({
                 type: "PUT",
-                url: `${id}`,
+                url: `/app/update/[[${id}]]`,
                 contentType: "application/json",
                 data: JSON.stringify(data),
                 success: function (response) {
-                    alert('메시지가 성공적으로 작성되었습니다.');
+                    alert('메시지가 성공적으로 작성되었습니다. 수정한 일정id: ' + response);
                     window.location.href = "/";
                 }
             });
@@ -51,14 +73,12 @@
 <body>
 <main class="container">
     <article>
-        <form action="#" method="#" th:method="put" th:action="@{{id}(id=*{id})}" th:object="${requestDTO}">
-            <input id="id" type="hidden" name="id" value="" th:field="*{id}">
-            <input id="title" type="text" name="title" value="" th:field="*{title}" placeholder="제목" aria-label="Text" />
-            <input id="content" type="text" name="content" value="" th:field="*{content}" placeholder="내용" aria-label="Text" />
-            <input id="name" type="text" name="name" value="" th:field="*{name}" placeholder="담당자이름" aria-label="Text" />
-            <input id="password" type="password" name="password" placeholder="비밀번호" aria-label="Password" />
-        <button>Button</button>
-        </form>
+        <input id="id" type="hidden" name="id" value="">
+        <input id="title" type="text" name="title" value="" placeholder="제목" aria-label="Text" />
+        <input id="content" type="text" name="content" value="" placeholder="내용" aria-label="Text" />
+        <input id="name" type="text" name="name" value="" placeholder="담당자이름" aria-label="Text" />
+        <input id="password" type="password" name="password" placeholder="비밀번호" aria-label="Password" />
+        <button onclick="createCalander()">Button</button>
     </article>
 </main>
 </body>

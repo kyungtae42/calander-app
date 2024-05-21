@@ -18,46 +18,36 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-@Controller
+@RestController
+@RequestMapping("/app")
 public class CalanderController {
     private final CalanderService calanderService;
     public CalanderController(CalanderService calanderService) {
         this.calanderService = calanderService;
     }
 
-    @RequestMapping("/")
-    public String getCalanders(Model model) {
-        calanderService.getCalanders(model);
-        return "index";
-    }
-    @GetMapping("/create")
-    public String getCreateCalander(@ModelAttribute("requestDTO") CalanderRequestDTO requestDTO) {
-        return "create";
-    }
+
     @PostMapping("/create")
-    public String createCalander (@ModelAttribute CalanderRequestDTO requestDTO) {
-        calanderService.createCalander(requestDTO);
-        return "redirect:/";
+    public CalanderResponseDTO createCalander (@RequestBody CalanderRequestDTO requestDTO) {
+        return calanderService.createCalander(requestDTO);
+
+    }
+    @GetMapping("/list")
+    public List<CalanderResponseDTO> getCalanders() {
+        return calanderService.getCalanders();
     }
     @GetMapping("/{id}")
-    public String getCalanderbyId(@PathVariable Long id, Model model) {
-        calanderService.getCalanderById(id, model);
-        return "detail";
-    }
-
-    @GetMapping("/update/{id}")
-    public String updateGetCalanderbyId(@PathVariable Long id, @ModelAttribute("requestDTO") CalanderRequestDTO requestDTO) {
-        calanderService.getUpdateCalanderById(id, requestDTO);
-        return "update";
+    public CalanderResponseDTO getCalanderbyId(@PathVariable Long id) {
+        return calanderService.getCalanderById(id);
     }
     @PutMapping("/update/{id}")
-    public String updateCalander(@PathVariable Long id, @ModelAttribute CalanderRequestDTO requestDTO) {
-        calanderService.updateCalander(id, requestDTO);
-        return "redirect:/";
+    public Long updateCalander(@PathVariable Long id, @RequestBody CalanderRequestDTO requestDTO) {
+        return calanderService.updateCalander(id, requestDTO);
     }
     @DeleteMapping("/delete/{id}")
-    public String deleteCalander(@PathVariable Long id, @RequestParam String password) {
+    public Long deleteCalander(@PathVariable Long id, @RequestParam String password) {
+        System.out.println(password);
         calanderService.deleteCalander(id, password);
-        return "redirect:/";
+        return id;
     }
 }

@@ -27,9 +27,10 @@ public class CalanderService {
         model.addAttribute("rows", calanderRepository.findAll().stream().map(CalanderResponseDTO::new).toList());
     }
 
-    public void getCalanderById(Long id, Model model) {
+    public CalanderResponseDTO getCalanderById(Long id) {
         Calander calander = findById(id);
-        model.addAttribute("row", calander);
+        CalanderResponseDTO calanderResponseDTO = new CalanderResponseDTO(calander);
+        return calanderResponseDTO;
     }
     public void getUpdateCalanderById(Long id, CalanderRequestDTO requestDTO) {
         Calander calander = findById(id);
@@ -50,10 +51,11 @@ public class CalanderService {
         return id;
     }
 
-    public void deleteCalander(Long id, String password) {
+    public Long deleteCalander(Long id, String password) {
         Calander calander = findById(id);
         if(calander.getPassword().equals(password)) {
             calanderRepository.deleteById(id);
+            return id;
         } else {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }

@@ -14,7 +14,7 @@ import java.sql.Date;
 @Setter
 @Table(name = "calander")
 @NoArgsConstructor
-public class Calander extends TimeStamped{
+public class Calander extends TimeStamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
