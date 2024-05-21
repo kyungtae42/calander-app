@@ -16,8 +16,6 @@ public class CalanderRequestDTO {
     private String title;
     private String content;
     private String name;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date date;
     private String password;
 
 }

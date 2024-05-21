@@ -25,7 +25,7 @@ public class CalanderController {
         this.calanderService = calanderService;
     }
 
-    @GetMapping("/")
+    @RequestMapping("/")
     public String getCalanders(Model model) {
         calanderService.getCalanders(model);
         return "index";
@@ -44,6 +44,7 @@ public class CalanderController {
         calanderService.getCalanderById(id, model);
         return "detail";
     }
+
     @GetMapping("/update/{id}")
     public String updateGetCalanderbyId(@PathVariable Long id, @ModelAttribute("requestDTO") CalanderRequestDTO requestDTO) {
         calanderService.getUpdateCalanderById(id, requestDTO);

@@ -14,7 +14,7 @@ import java.sql.Date;
 @Setter
 @Table(name = "calander")
 @NoArgsConstructor
-public class Calander {
+public class Calander extends TimeStamped{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,9 +24,6 @@ public class Calander {
     private String content;
     @Column(name = "name", nullable = false, length = 20)
     private String name;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Column(name = "date", nullable = false)
-    private Date date;
     @Column(name = "password", nullable = false, length = 10)
     private String password;
 
@@ -34,7 +31,6 @@ public class Calander {
         this.title = requestDTO.getTitle();
         this.content = requestDTO.getContent();
         this.name = requestDTO.getName();
-        this.date = requestDTO.getDate();
         this.password = requestDTO.getPassword();
     }
 
@@ -42,6 +38,5 @@ public class Calander {
         this.title = requestDTO.getTitle();
         this.content = requestDTO.getContent();
         this.name = requestDTO.getName();
-        this.date = requestDTO.getDate();
     }
 }

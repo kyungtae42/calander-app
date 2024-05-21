@@ -22,7 +22,7 @@
             <tr th:each="row : ${rows}">
                 <th><a th:href="@{{id}(id=${row.id})}"><span th:text="${row.title}"></span></a></th>
                 <td th:text="${row.name}">${name}</td>
-                <td th:text="${row.date}">${date}</td>
+                <td th:text="${row.updatedAt}">${date}</td>
             </tr>
         </tbody>
     </table>

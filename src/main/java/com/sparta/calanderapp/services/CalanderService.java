@@ -37,7 +37,6 @@ public class CalanderService {
         requestDTO.setTitle(calander.getTitle());
         requestDTO.setContent(calander.getContent());
         requestDTO.setName(calander.getName());
-        requestDTO.setDate(calander.getDate());
     }
     @Transactional
     public Long updateCalander(Long id, CalanderRequestDTO requestDTO) {

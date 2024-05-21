@@ -5,7 +5,7 @@ import lombok.Getter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Date;
-//locatdatetime, timezone
+import java.time.LocalDateTime;
 
 @Getter
 public class CalanderResponseDTO {
@@ -13,8 +13,8 @@ public class CalanderResponseDTO {
     private String title;
     private String content;
     private String name;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date date;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     private String password;
 
     public CalanderResponseDTO(Calander calander) {
@@ -22,16 +22,16 @@ public class CalanderResponseDTO {
         this.title = calander.getTitle();
         this.content = calander.getContent();
         this.name = calander.getName();
-        this.date = calander.getDate();
         this.password = calander.getPassword();
+        this.createdAt = calander.getCreatedAt();
+        this.updatedAt = calander.getUpdatedAt();
     }
 
-    public CalanderResponseDTO(Long id, String title, String content, String name, Date date, String password) {
+    public void update (Long id, String title, String content, String name, Date date, String password) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.name = name;
-        this.date = date;
         this.password = password;
     }
 }
