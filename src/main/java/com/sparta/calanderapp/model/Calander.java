@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -18,6 +19,9 @@ public class Calander extends TimeStamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @OneToMany(mappedBy = "calander")
+    private List<Comment> comments;
+
     @Column(name = "title", nullable = false)
     private String title;
     @Column(name = "content", nullable = false)

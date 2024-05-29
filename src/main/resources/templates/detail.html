@@ -10,9 +10,10 @@
     <script th:inline="javascript">
         $(document).ready(function () {
             // HTML 문서를 로드할 때마다 실행합니다.
-            getById();
+            getCalanderById();
+            getCommentsById();
         })
-        function getById() {
+        function getCalanderById() {
             // 2. 일정 목록 html로 붙이기
             $.ajax({
                 type: 'GET',
@@ -24,15 +25,41 @@
                         content: response.content,
                         updatedAt:response.updatedAt
                     };
-                        addHTML(result);
+                        addCalanderHTML(result);
                 }
             })
         }
-        function addHTML(result) {
+        function getCommentsById() {
+            $.ajax({
+                type: 'GET',
+                url: `/comment/[[${id}]]`,
+                success: function (response) {
+                    for (let i = 0; i < response.length; i++) {
+                        let comment = response[i];
+                        var result = {
+                            userId: comment['userId'],
+                            content: comment['content'],
+                            updatedAt: comment['updatedAt']
+                        }
+                        addCommentHTML(result);
+                    }
+                }
+            })
+        }
+        function addCalanderHTML(result) {
             $('#title').append(result.title);
             $('#content').append(result.content);
             $('#name').append(result.name);
             $('#updatedAt').append(result.updatedAt);
+        }
+        function addCommentHTML(result) {
+            let temp_html = `
+                <h6>${result.userId}</h6>
+                <p>${result.content}</p>
+                <span>${result.updatedAt}</span>
+                <hr/>`
+
+            $('#comment').append(temp_html);
         }
         function deleteCalander() {
             // 1. 작성한 메모를 불러옵니다.
@@ -62,6 +89,29 @@
                 }
             });
         }
+        function postComment() {
+            let id = $('#id').val();
+            let content = $('#commentContent').val();
+            let userId = $('#commentUserId').val();
+            let data = {
+                'content': content,
+                'userId': userId
+            };
+
+            $.ajax({
+                type: "POST",
+                url: `/comment/[[${id}]]`,
+                contentType: "application/json",
+                data: JSON.stringify(data),
+                success: function (response) {
+                    alert('댓글이 성공적으로 작성되었습니다.\n' +
+                        '작성자:' + response.userId + '\n' +
+                        '내용:' + response.content + '\n' +
+                        '생성일자' + response.createdAt + '\n');
+                    window.location.href = location.href;
+                }
+            });
+        }
     </script>
 </head>
 <body>
@@ -74,15 +124,16 @@
         </header>
         <p id="content"></p>
         <footer>
+            <div id = "comment"></div>
+            <input id="commentUserId" type="text" name="userId" placeholder="작성자 이름" aria-label="Password" />
+            <input id="commentContent" type="text" name="content" placeholder="댓글" aria-label="Password" />
+            <button onclick="postComment()">등록</button><br/>
             <a th:href="@{update/{id}(id=${id})}"><button>수정</button></a>
-            <!--form action="#" method="#" th:method="delete" th:action="@{app/delete/{id}(id=${id})}"-->
                 <fieldset role="group">
                     <input id="id" type="hidden" value="" th:value="${id}" />
                     <input id="password" type="password" name="password" placeholder="비밀번호" aria-label="Password" />
                     <button onclick="deleteCalander()">삭제</button>
                 </fieldset>
-            <!--/form-->
-
         </footer>
     </article>
 </main>
