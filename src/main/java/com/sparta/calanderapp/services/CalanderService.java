@@ -4,27 +4,28 @@ import com.sparta.calanderapp.dto.CalanderRequestDTO;
 import com.sparta.calanderapp.dto.CalanderResponseDTO;
 import com.sparta.calanderapp.model.Calander;
 import com.sparta.calanderapp.repository.CalanderRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
-@Component
+import java.util.List;
+
+
 @Service
+@RequiredArgsConstructor
 public class CalanderService {
     private final CalanderRepository calanderRepository;
 
-    public CalanderService(CalanderRepository calanderRepository) {
-        this.calanderRepository = calanderRepository;
-    }
-
-    public void createCalander(CalanderRequestDTO requestDTO) {
+    public CalanderResponseDTO createCalander(CalanderRequestDTO requestDTO) {
         Calander calander = new Calander(requestDTO);
         calanderRepository.save(calander);
+        return new CalanderResponseDTO(calander);
     }
 
-    public void getCalanders(Model model) {
-        model.addAttribute("rows", calanderRepository.findAll().stream().map(CalanderResponseDTO::new).toList());
+    public List<CalanderResponseDTO> getCalanders() {
+        return calanderRepository.findAll().stream().map(CalanderResponseDTO::new).toList();
     }
 
     public CalanderResponseDTO getCalanderById(Long id) {
