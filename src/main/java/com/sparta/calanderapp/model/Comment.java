@@ -31,4 +31,8 @@ public class Comment extends TimeStamped {
         this.userId = requestDTO.getUserId();
         this.calander = calander;
     }
+
+    public void update(CommentRequestDTO requestDTO) {
+        this.content = requestDTO.getContent();
+    }
 }

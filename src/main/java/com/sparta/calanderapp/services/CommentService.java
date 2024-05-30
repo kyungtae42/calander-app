@@ -1,6 +1,5 @@
 package com.sparta.calanderapp.services;
 
-import com.sparta.calanderapp.dto.CalanderResponseDTO;
 import com.sparta.calanderapp.dto.CommentRequestDTO;
 import com.sparta.calanderapp.dto.CommentResponseDTO;
 import com.sparta.calanderapp.model.Calander;
@@ -9,6 +8,7 @@ import com.sparta.calanderapp.repository.CalanderRepository;
 import com.sparta.calanderapp.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -37,5 +37,32 @@ public class CommentService {
                 () -> new IllegalArgumentException("존재하지 않는 일정입니다.")
         );
         return commentRepository.findAllByCalander(calander).stream().map(CommentResponseDTO::new).toList();
+    }
+
+    @Transactional
+    public CommentResponseDTO updateComment(CommentRequestDTO requestDTO, Long commentId) {
+        Comment comment = findById(commentId);
+        if(requestDTO.getUserId().equals(comment.getUserId())) {
+            comment.update(requestDTO);
+        } else {
+            throw new RuntimeException("사용자가 일치하지 않습니다.");
+        }
+        return new CommentResponseDTO(comment);
+    }
+
+    public Long deleteComment(Long commentId, String userId) {
+        Comment comment = findById(commentId);
+        if(comment.getUserId().equals(userId)) {
+            commentRepository.delete(comment);
+        } else {
+            throw new RuntimeException("사용자가 일치하지 않습니다.");
+        }
+        return commentId;
+    }
+
+    public Comment findById(Long commentId) {
+        return commentRepository.findById(commentId).orElseThrow(
+                () -> new IllegalArgumentException("존재하지 않는 댓글입니다.")
+        );
     }
 }

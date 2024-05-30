@@ -37,14 +37,18 @@
                     for (let i = 0; i < response.length; i++) {
                         let comment = response[i];
                         var result = {
+                            id: comment['id'],
                             userId: comment['userId'],
                             content: comment['content'],
                             updatedAt: comment['updatedAt']
                         }
-                        addCommentHTML(result);
+                        addCommentHTML(result, i);
                     }
                 }
             })
+        }
+        function showUpdateForm(id) {
+            $('#updateForm'+id).toggle();
         }
         function addCalanderHTML(result) {
             $('#title').append(result.title);
@@ -56,7 +60,13 @@
             let temp_html = `
                 <h6>${result.userId}</h6>
                 <p>${result.content}</p>
-                <span>${result.updatedAt}</span>
+                <span>${result.updatedAt}<button onclick="showUpdateForm(${result.id})">수정</button></span>
+                <div id="updateForm${result.id}" style="display: none">
+                    <input id="commentUserId${result.id}" type="text" name="userId" placeholder="작성자 이름" aria-label="Password" />
+                    <input id="commentContent${result.id}" type="text" name="content" placeholder="댓글" aria-label="Password" />
+                    <button onclick="updateComment(${result.id})">등록</button><button onclick="deleteComment(${result.id})">삭제</button><br/>
+                </div>
+
                 <hr/>`
 
             $('#comment').append(temp_html);
@@ -108,6 +118,41 @@
                         '작성자:' + response.userId + '\n' +
                         '내용:' + response.content + '\n' +
                         '생성일자' + response.createdAt + '\n');
+                    window.location.href = location.href;
+                }
+            });
+        }
+        function updateComment(id) {
+            let content = $('#commentContent'+id).val();
+            let userId = $('#commentUserId'+id).val();
+            let data = {
+                'content': content,
+                'userId': userId
+            };
+
+            $.ajax({
+                type: "PUT",
+                url: '/comment/'+id,
+                contentType: "application/json",
+                data: JSON.stringify(data),
+                success: function (response) {
+                    alert('댓글이 성공적으로 수정되었습니다.\n' +
+                        '작성자:' + response.userId + '\n' +
+                        '내용:' + response.content + '\n' +
+                        '수정일자' + response.updatedAt + '\n');
+                    window.location.href = location.href;
+                }
+            });
+        }
+        function deleteComment(id) {
+            let content = $('#commentContent'+id).val();
+            let userId = $('#commentUserId'+id).val();
+
+            $.ajax({
+                type: "DELETE",
+                url: '/comment/'+id+'?userId='+userId,
+                success: function (response) {
+                    alert('댓글이 성공적으로 삭제되었습니다.');
                     window.location.href = location.href;
                 }
             });
