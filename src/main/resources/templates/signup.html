@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <title>Title</title>
+    <script>
+        function toggleAdmin() {
+            console.log($('#admin').val());
+            $('#adminTokenForm').toggle();
+        }
+        function createUser() {
+            // 1. 작성한 메모를 불러옵니다.
+            let nickname = $('#nickname').val();
+            let username = $('#username').val();
+            let password = $('#password').val();
+            let admin = $('input[id=admin]').is(':checked');
+            let adminToken = $('#adminToken').val();
+
+            console.log(admin)
+
+            // // 2. 작성한 메모가 올바른지 isValidContents 함수를 통해 확인합니다.
+            // if (isValidContents(contents) == false) {
+            //     return;
+            // }
+            // 3. genRandomName 함수를 통해 익명의 username을 만듭니다.
+            // let username = genRandomName(10);
+
+            // 4. 전달할 data JSON으로 만듭니다.
+            let data = {
+                'nickname': nickname,
+                'username': username,
+                'password': password,
+                'admin': admin,
+                'adminToken': adminToken,
+            };
+
+            // 5. POST /api/memos 에 data를 전달합니다.
+            $.ajax({
+                type: "POST",
+                url: "/signup",
+                contentType: "application/json",
+                data: JSON.stringify(data),
+                success: function (response) {
+                    alert('메시지가 성공적으로 작성되었습니다.\n' +
+                        response.statusCode());
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <main class="container">
+        <form>
+            <fieldset>
+                <label>
+                    별명
+                    <input id="nickname" name="nickname" placeholder="별명" autocomplete="given-name"/>
+                </label>
+                <label>
+                    아이디
+                    <input type="text" id="username" name="username" placeholder="아이디" autocomplete="email"/>
+                </label>
+                <label>
+                    비밀번호
+                    <input type="password" id="password" name="password" placeholder="비밀번호" autocomplete="email"/>
+                </label>
+                <label>
+                    관리자
+                    <input type="checkbox" id="admin" name="admin" onclick="toggleAdmin()"/>
+                </label>
+                <label id="adminTokenForm" style="display: none">
+                    관리자 토큰
+                    <input type="password" id="adminToken" name="adminToken" placeholder="관리자 토큰 입력" autocomplete=""/>
+                </label>
+
+            </fieldset>
+
+            <button onclick="createUser()">등록</button>
+        </form>
+    </main>
+</body>
+</html>

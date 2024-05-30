@@ -2,8 +2,8 @@ package com.sparta.calanderapp.services;
 
 import com.sparta.calanderapp.dto.CommentRequestDTO;
 import com.sparta.calanderapp.dto.CommentResponseDTO;
-import com.sparta.calanderapp.model.Calander;
-import com.sparta.calanderapp.model.Comment;
+import com.sparta.calanderapp.entity.Calander;
+import com.sparta.calanderapp.entity.Comment;
 import com.sparta.calanderapp.repository.CalanderRepository;
 import com.sparta.calanderapp.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.sparta.calanderapp.model;
+package com.sparta.calanderapp.entity;
 
 import com.sparta.calanderapp.dto.CommentRequestDTO;
 import jakarta.persistence.*;

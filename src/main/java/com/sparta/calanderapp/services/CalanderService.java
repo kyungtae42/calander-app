@@ -2,13 +2,11 @@ package com.sparta.calanderapp.services;
 
 import com.sparta.calanderapp.dto.CalanderRequestDTO;
 import com.sparta.calanderapp.dto.CalanderResponseDTO;
-import com.sparta.calanderapp.model.Calander;
+import com.sparta.calanderapp.entity.Calander;
 import com.sparta.calanderapp.repository.CalanderRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 
 import java.util.List;
 

@@ -1,7 +1,6 @@
 package com.sparta.calanderapp.dto;
 
-import com.sparta.calanderapp.model.Calander;
-import com.sparta.calanderapp.model.Comment;
+import com.sparta.calanderapp.entity.Comment;
 import lombok.Getter;
 
 import java.time.LocalDateTime;

@@ -1,13 +1,11 @@
-package com.sparta.calanderapp.model;
+package com.sparta.calanderapp.entity;
 
 import com.sparta.calanderapp.dto.CalanderRequestDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import java.sql.Date;
 import java.util.List;
 
 @Entity

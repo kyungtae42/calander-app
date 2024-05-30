@@ -1,4 +1,4 @@
-package com.sparta.calanderapp.model;
+package com.sparta.calanderapp.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

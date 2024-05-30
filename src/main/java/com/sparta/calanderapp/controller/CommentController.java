@@ -1,9 +1,7 @@
 package com.sparta.calanderapp.controller;
 
-import com.sparta.calanderapp.dto.CalanderResponseDTO;
 import com.sparta.calanderapp.dto.CommentRequestDTO;
 import com.sparta.calanderapp.dto.CommentResponseDTO;
-import com.sparta.calanderapp.model.Comment;
 import com.sparta.calanderapp.services.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatusCode;
