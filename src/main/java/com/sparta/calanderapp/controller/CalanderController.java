@@ -2,7 +2,9 @@ package com.sparta.calanderapp.controller;
 
 import com.sparta.calanderapp.dto.CalanderRequestDTO;
 import com.sparta.calanderapp.dto.CalanderResponseDTO;
+import com.sparta.calanderapp.security.UserDetailsImpl;
 import com.sparta.calanderapp.services.CalanderService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,8 +19,8 @@ public class CalanderController {
 
 
     @PostMapping("/create")
-    public CalanderResponseDTO createCalander (@RequestBody CalanderRequestDTO requestDTO) {
-        return calanderService.createCalander(requestDTO);
+    public CalanderResponseDTO createCalander (@RequestBody CalanderRequestDTO requestDTO, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return calanderService.createCalander(requestDTO, userDetails.getUser());
 
     }
     @GetMapping("/list")

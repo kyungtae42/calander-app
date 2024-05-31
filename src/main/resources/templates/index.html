@@ -45,7 +45,7 @@
                         var result = {
                             'id': calander['id'],
                             'title': calander['title'],
-                            'name': calander['name'],
+                            'name': calander['user']['nickname'],
                             'updatedAt': calander['updatedAt']
                         }
                         addHTML(result);
@@ -111,7 +111,7 @@
     <input id="content" type="text" name="content" placeholder="내용" aria-label="Text" />
     <input id="name" type="text" name="name" placeholder="담당자이름" aria-label="Text" />
     <input id="password" type="password" name="password" placeholder="비밀번호" aria-label="Password" />
-    <button onclick="createCalander()">Button</button>
+    <button onclick="createCalander()">등록</button><a href="/login-page"><button>로그인</button></a>
 </main>
 </body>
 </html>

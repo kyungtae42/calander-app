@@ -1,5 +1,6 @@
 package com.sparta.calanderapp.dto;
 
+import com.sparta.calanderapp.entity.User;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,5 +9,5 @@ import lombok.Setter;
 public class CommentRequestDTO {
     private Long id;
     private String content;
-    private String userId;
+    private User user;
 }

@@ -45,8 +45,8 @@
                 contentType: "application/json",
                 data: JSON.stringify(data),
                 success: function (response) {
-                    alert('메시지가 성공적으로 작성되었습니다.\n' +
-                        response.statusCode());
+                    alert('메시지가 성공적으로 작성되었습니다.' + response);
+                    window.location.href="/";
                 }
             });
         }
@@ -54,7 +54,6 @@
 </head>
 <body>
     <main class="container">
-        <form>
             <fieldset>
                 <label>
                     별명
@@ -80,7 +79,6 @@
             </fieldset>
 
             <button onclick="createUser()">등록</button>
-        </form>
     </main>
 </body>
 </html>

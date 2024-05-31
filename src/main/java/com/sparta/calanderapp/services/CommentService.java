@@ -4,6 +4,7 @@ import com.sparta.calanderapp.dto.CommentRequestDTO;
 import com.sparta.calanderapp.dto.CommentResponseDTO;
 import com.sparta.calanderapp.entity.Calander;
 import com.sparta.calanderapp.entity.Comment;
+import com.sparta.calanderapp.entity.User;
 import com.sparta.calanderapp.repository.CalanderRepository;
 import com.sparta.calanderapp.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +43,7 @@ public class CommentService {
     @Transactional
     public CommentResponseDTO updateComment(CommentRequestDTO requestDTO, Long commentId) {
         Comment comment = findById(commentId);
-        if(requestDTO.getUserId().equals(comment.getUserId())) {
+        if(requestDTO.getUser().equals(comment.getUser())) {
             comment.update(requestDTO);
         } else {
             throw new RuntimeException("사용자가 일치하지 않습니다.");
@@ -50,9 +51,9 @@ public class CommentService {
         return new CommentResponseDTO(comment);
     }
 
-    public Long deleteComment(Long commentId, String userId) {
+    public Long deleteComment(Long commentId, User user) {
         Comment comment = findById(commentId);
-        if(comment.getUserId().equals(userId)) {
+        if(comment.getUser().equals(user)) {
             commentRepository.delete(comment);
         } else {
             throw new RuntimeException("사용자가 일치하지 않습니다.");

@@ -2,10 +2,12 @@ package com.sparta.calanderapp.controller;
 
 import com.sparta.calanderapp.dto.CommentRequestDTO;
 import com.sparta.calanderapp.dto.CommentResponseDTO;
+import com.sparta.calanderapp.security.UserDetailsImpl;
 import com.sparta.calanderapp.services.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,8 +30,8 @@ public class CommentController {
         return commentService.updateComment(requestDTO, commentId);
     }
     @DeleteMapping("/{commentId}")
-    public ResponseEntity<String> deleteComment(@PathVariable Long commentId, @RequestParam String userId) {
-        commentService.deleteComment(commentId, userId);
+    public ResponseEntity<String> deleteComment(@PathVariable Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        commentService.deleteComment(commentId, userDetails.getUser());
         return new ResponseEntity<>("댓글이 성공적으로 삭제되었습니다.", HttpStatusCode.valueOf(200));
     }
 }

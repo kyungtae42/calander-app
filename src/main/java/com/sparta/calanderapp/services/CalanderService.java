@@ -3,7 +3,9 @@ package com.sparta.calanderapp.services;
 import com.sparta.calanderapp.dto.CalanderRequestDTO;
 import com.sparta.calanderapp.dto.CalanderResponseDTO;
 import com.sparta.calanderapp.entity.Calander;
+import com.sparta.calanderapp.entity.User;
 import com.sparta.calanderapp.repository.CalanderRepository;
+import com.sparta.calanderapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,9 +17,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CalanderService {
     private final CalanderRepository calanderRepository;
-
-    public CalanderResponseDTO createCalander(CalanderRequestDTO requestDTO) {
-        Calander calander = new Calander(requestDTO);
+    private final UserRepository userRepository;
+    public CalanderResponseDTO createCalander(CalanderRequestDTO requestDTO, User user) {
+        Calander calander = new Calander(requestDTO, user);
         calanderRepository.save(calander);
         return new CalanderResponseDTO(calander);
     }
@@ -36,7 +38,6 @@ public class CalanderService {
         requestDTO.setId(calander.getId());
         requestDTO.setTitle(calander.getTitle());
         requestDTO.setContent(calander.getContent());
-        requestDTO.setName(calander.getName());
     }
     @Transactional
     public Long updateCalander(Long id, CalanderRequestDTO requestDTO) {
@@ -64,5 +65,10 @@ public class CalanderService {
         return calanderRepository.findById(id).orElseThrow(() ->
             new IllegalArgumentException("존재하지 않는 일정입니다")
         );
+    }
+
+    public boolean isUser(Long id, User user) {
+        Calander calander = findById(id);
+        return calander.getUser().equals(user);
     }
 }

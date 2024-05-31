@@ -21,7 +21,7 @@
                 success: function (response) {
                     var result = {
                         title: response.title,
-                        name: response.name,
+                        user: response.user,
                         content: response.content,
                         updatedAt:response.updatedAt
                     };
@@ -53,7 +53,7 @@
         function addCalanderHTML(result) {
             $('#title').append(result.title);
             $('#content').append(result.content);
-            $('#name').append(result.name);
+            $('#name').append(result.user.nickname);
             $('#updatedAt').append(result.updatedAt);
         }
         function addCommentHTML(result) {

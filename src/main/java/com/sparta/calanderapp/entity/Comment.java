@@ -20,15 +20,17 @@ public class Comment extends TimeStamped {
     @JoinColumn(name = "calander_id", nullable = false)
     private Calander calander;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
     @Column(name = "content", nullable = false)
     private String content;
 
-    @Column(name = "user_id", nullable = false)
-    private String userId;
 
     public Comment(CommentRequestDTO requestDTO, Calander calander) {
         this.content = requestDTO.getContent();
-        this.userId = requestDTO.getUserId();
+        this.user= requestDTO.getUser();
         this.calander = calander;
     }
 

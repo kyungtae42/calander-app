@@ -8,19 +8,15 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     <title>Title</title>
     <script>
+        let host = 'http://' + window.location.host;
         function toggleAdmin() {
             console.log($('#admin').val());
             $('#adminTokenForm').toggle();
         }
-        function createUser() {
+        function login() {
             // 1. 작성한 메모를 불러옵니다.
-            let nickname = $('#nickname').val();
             let username = $('#username').val();
             let password = $('#password').val();
-            let admin = $('input[id=admin]').is(':checked');
-            let adminToken = $('#adminToken').val();
-
-            console.log(admin)
 
             // // 2. 작성한 메모가 올바른지 isValidContents 함수를 통해 확인합니다.
             // if (isValidContents(contents) == false) {
@@ -31,22 +27,20 @@
 
             // 4. 전달할 data JSON으로 만듭니다.
             let data = {
-                'nickname': nickname,
                 'username': username,
-                'password': password,
-                'admin': admin,
-                'adminToken': adminToken,
+                'password': password
             };
 
             // 5. POST /api/memos 에 data를 전달합니다.
             $.ajax({
                 type: "POST",
-                url: "/signup",
+                url: "/login",
                 contentType: "application/json",
                 data: JSON.stringify(data),
                 success: function (response) {
-                    alert('메시지가 성공적으로 작성되었습니다.\n' +
-                        response.statusCode());
+                    alert('로그인완료.\n' +
+                        response);
+                window.location.href = host;
                 }
             });
         }
@@ -54,7 +48,6 @@
 </head>
 <body>
     <main class="container">
-        <form>
             <fieldset>
                 <label>
                     아이디
@@ -66,8 +59,7 @@
                 </label>
             </fieldset>
 
-            <button onclick="login()">등록</button>
-        </form>
+            <button onclick="login()">등록</button><a href="/signup-page"><button>회원가입</button></a>
     </main>
 </body>
 </html>

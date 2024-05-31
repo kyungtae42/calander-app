@@ -1,5 +1,6 @@
 package com.sparta.calanderapp.dto;
 
+import com.sparta.calanderapp.entity.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +16,6 @@ public class CalanderRequestDTO {
     private Long id;
     private String title;
     private String content;
-    private String name;
     private String password;
 
 }
