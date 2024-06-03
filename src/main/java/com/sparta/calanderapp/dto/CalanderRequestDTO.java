@@ -1,6 +1,7 @@
 package com.sparta.calanderapp.dto;
 
 import com.sparta.calanderapp.entity.User;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -14,8 +15,11 @@ import java.sql.Date;
 @NoArgsConstructor
 public class CalanderRequestDTO {
     private Long id;
+    @NotBlank
     private String title;
+    @NotBlank
     private String content;
+    @NotBlank
     private String password;
 
 }

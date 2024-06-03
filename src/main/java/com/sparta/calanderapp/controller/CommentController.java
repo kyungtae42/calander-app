@@ -2,6 +2,7 @@ package com.sparta.calanderapp.controller;
 
 import com.sparta.calanderapp.dto.CommentRequestDTO;
 import com.sparta.calanderapp.dto.CommentResponseDTO;
+import com.sparta.calanderapp.entity.User;
 import com.sparta.calanderapp.security.UserDetailsImpl;
 import com.sparta.calanderapp.services.CommentService;
 import lombok.RequiredArgsConstructor;
@@ -18,16 +19,16 @@ import java.util.List;
 public class CommentController {
     private final CommentService commentService;
     @PostMapping("/{calanderId}")
-    public CommentResponseDTO createComment(@RequestBody CommentRequestDTO requestDTO, @PathVariable Long calanderId) {
-        return commentService.createComment(requestDTO, calanderId);
+    public CommentResponseDTO createComment(@RequestBody CommentRequestDTO requestDTO, @PathVariable Long calanderId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return commentService.createComment(requestDTO, calanderId, userDetails.getUser());
     }
     @GetMapping("/{calanderId}")
     public List<CommentResponseDTO> getComments(@PathVariable Long calanderId) {
         return commentService.getComments(calanderId);
     }
     @PutMapping("/{commentId}")
-    public CommentResponseDTO updateComment(@RequestBody CommentRequestDTO requestDTO, @PathVariable Long commentId) {
-        return commentService.updateComment(requestDTO, commentId);
+    public CommentResponseDTO updateComment(@RequestBody CommentRequestDTO requestDTO, @PathVariable Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return commentService.updateComment(requestDTO, commentId, userDetails.getUser());
     }
     @DeleteMapping("/{commentId}")
     public ResponseEntity<String> deleteComment(@PathVariable Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails) {

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="light dark" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js" integrity="sha512-3j3VU6WC5rPQB4Ld1jnLV7Kd5xr+cq9avvhwqzbH/taCRNURoeEpoPBK9pDyeukwSxwRPJ8fDgvYXd6SkaZ2TA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     <title>Hello world!</title>
     <script>
@@ -17,6 +18,14 @@
             return year + "-" + month + "-" + day;
         }
         $(document).ready(function () {
+            const auth = getToken();
+            if(auth === '') {
+                $('#login').show();
+                $('#logout').hide();
+            } else {
+                $('#login').hide();
+                $('#logout').show();
+            }
             // HTML 문서를 로드할 때마다 실행합니다.
             $('#date').val(getToday());
             getList();
@@ -57,7 +66,6 @@
             // 1. 작성한 메모를 불러옵니다.
             let title = $('#title').val();
             let content = $('#content').val();
-            let name = $('#name').val();
             let password = $('#password').val();
 
             // // 2. 작성한 메모가 올바른지 isValidContents 함수를 통해 확인합니다.
@@ -71,7 +79,6 @@
             let data = {
                 'title': title,
                 'content': content,
-                'name': name,
                 'password': password
             };
 
@@ -91,6 +98,20 @@
                 }
             });
         }
+        function logout() {
+            // 토큰 삭제
+            $.removeCookie('Authorization');
+            window.location.href = "/";
+        }
+        function getToken() {
+            let auth = $.cookie('Authorization');
+
+            if(auth === undefined) {
+                return '';
+            }
+
+            return auth;
+        }
     </script>
 </head>
 <body>
@@ -109,9 +130,8 @@
     </table>
     <input id="title" type="text" name="title" placeholder="제목" aria-label="Text" />
     <input id="content" type="text" name="content" placeholder="내용" aria-label="Text" />
-    <input id="name" type="text" name="name" placeholder="담당자이름" aria-label="Text" />
     <input id="password" type="password" name="password" placeholder="비밀번호" aria-label="Password" />
-    <button onclick="createCalander()">등록</button><a href="/login-page"><button>로그인</button></a>
+    <button onclick="createCalander()">등록</button><a id="login" href="/login-page"><button>로그인</button></a><button id="logout" onclick="logout()">로그아웃</button>
 </main>
 </body>
 </html>

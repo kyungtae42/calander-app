@@ -40,24 +40,31 @@ public class CalanderService {
         requestDTO.setContent(calander.getContent());
     }
     @Transactional
-    public Long updateCalander(Long id, CalanderRequestDTO requestDTO) {
+    public Long updateCalander(Long id, CalanderRequestDTO requestDTO, User user) {
         Calander calander = findById(id);
-        if(calander.getPassword().equals(requestDTO.getPassword())) {
-            calander.update(requestDTO);
+        if(calander.getUser().getId().equals(user.getId())){
+            if(calander.getPassword().equals(requestDTO.getPassword())) {
+                calander.update(requestDTO);
+            } else {
+                throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            }
         } else {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            throw new IllegalArgumentException("사용자가 일치하지 않습니다.");
         }
-
         return id;
     }
 
-    public Long deleteCalander(Long id, String password) {
+    public Long deleteCalander(Long id, String password, User user) {
         Calander calander = findById(id);
-        if(calander.getPassword().equals(password)) {
-            calanderRepository.deleteById(id);
-            return id;
+        if(calander.getUser().getId().equals(user.getId())) {
+            if(calander.getPassword().equals(password)) {
+                calanderRepository.deleteById(id);
+                return id;
+            } else {
+                throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            }
         } else {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            throw new IllegalArgumentException("사용자가 일치하지 않습니다.");
         }
     }
 
@@ -65,10 +72,5 @@ public class CalanderService {
         return calanderRepository.findById(id).orElseThrow(() ->
             new IllegalArgumentException("존재하지 않는 일정입니다")
         );
-    }
-
-    public boolean isUser(Long id, User user) {
-        Calander calander = findById(id);
-        return calander.getUser().equals(user);
     }
 }

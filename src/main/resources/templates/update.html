@@ -32,12 +32,11 @@
             $('#content').val(result.content);
             $('#name').val(result.name);
         }
-        function createCalander() {
+        function updateCalander() {
             // 1. 작성한 메모를 불러옵니다.
             let id = $('#id').val();
             let title = $('#title').val();
             let content = $('#content').val();
-            let name = $('#name').val();
             let password = $('#password').val();
 
             // // 2. 작성한 메모가 올바른지 isValidContents 함수를 통해 확인합니다.
@@ -52,7 +51,6 @@
                 'id': id,
                 'title': title,
                 'content': content,
-                'name': name,
                 'password': password
             };
 
@@ -64,7 +62,7 @@
                 data: JSON.stringify(data),
                 success: function (response) {
                     alert('메시지가 성공적으로 작성되었습니다. 수정한 일정id: ' + response);
-                    window.location.href = "/";
+                    history.back();
                 }
             });
         }
@@ -72,14 +70,13 @@
 </head>
 <body>
 <main class="container">
-    <article>
-        <input id="id" type="hidden" name="id" value="">
-        <input id="title" type="text" name="title" value="" placeholder="제목" aria-label="Text" />
-        <input id="content" type="text" name="content" value="" placeholder="내용" aria-label="Text" />
-        <input id="name" type="text" name="name" value="" placeholder="담당자이름" aria-label="Text" />
-        <input id="password" type="password" name="password" placeholder="비밀번호" aria-label="Password" />
-        <button onclick="createCalander()">Button</button>
-    </article>
+        <article>
+            <input id="id" type="hidden" name="id" value="">
+            <input id="title" type="text" name="title" value="" placeholder="제목" aria-label="Text" />
+            <input id="content" type="text" name="content" value="" placeholder="내용" aria-label="Text" />
+            <input id="password" type="password" name="password" placeholder="비밀번호" aria-label="Password" />
+            <button onclick="updateCalander()">등록</button>
+        </article>
 </main>
 </body>
 </html>

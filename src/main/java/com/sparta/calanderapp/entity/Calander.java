@@ -2,6 +2,7 @@ package com.sparta.calanderapp.entity;
 
 import com.sparta.calanderapp.dto.CalanderRequestDTO;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,6 +25,7 @@ public class Calander extends TimeStamped {
     private User user;
 
     @Column(name = "title", nullable = false)
+    @NotBlank
     private String title;
     @Column(name = "content", nullable = false)
     private String content;

@@ -28,9 +28,9 @@ public class Comment extends TimeStamped {
     private String content;
 
 
-    public Comment(CommentRequestDTO requestDTO, Calander calander) {
+    public Comment(CommentRequestDTO requestDTO, Calander calander, User user) {
         this.content = requestDTO.getContent();
-        this.user= requestDTO.getUser();
+        this.user= user;
         this.calander = calander;
     }
 
